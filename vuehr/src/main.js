@@ -15,9 +15,14 @@ import {isNotNullORBlank} from './utils/utils'
 import './utils/filter_utils'
 import 'font-awesome/css/font-awesome.min.css'
 import BaiduMap from 'vue-baidu-map'
+import ECharts from 'vue-echarts/components/ECharts'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/chart/pie'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.component('chart', ECharts)
 
 Vue.prototype.getRequest = getRequest;
 Vue.prototype.postRequest = postRequest;

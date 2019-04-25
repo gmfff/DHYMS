@@ -5,8 +5,18 @@ import java.sql.Timestamp;
 
 public class JobLevel {
     private Long id;
+    private String ZYD_BH;
     private String name;
     private String titleLevel;
+
+    public String getZYD_BH() {
+        return ZYD_BH;
+    }
+
+    public void setZYD_BH(String ZYD_BH) {
+        this.ZYD_BH = ZYD_BH;
+    }
+
     private Timestamp createDate;
 
 

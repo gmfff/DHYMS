@@ -5,9 +5,7 @@ import org.sang.bean.Position;
 
 import java.util.List;
 
-/**
- * Created by sang on 2018/1/10.
- */
+
 public interface PositionMapper {
 
     int addPos(@Param("pos") Position pos);

@@ -7,9 +7,7 @@ import org.sang.bean.SysMsg;
 
 import java.util.List;
 
-/**
- * Created by sang on 2018/2/2.
- */
+
 public interface SysMsgMapper {
 
     int sendMsg(MsgContent msg);

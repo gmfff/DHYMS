@@ -18,9 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by sang on 2018/1/16.
- */
+
 public class PoiUtils {
 
     public static ResponseEntity<byte[]> exportEmp2Excel(List<Employee> emps) {
@@ -340,5 +338,96 @@ public class PoiUtils {
             e.printStackTrace();
         }
         return emps;
+    }
+    public static ResponseEntity<byte[]> exportEquipmentExcel(List<Equipment> eqs) {
+        HttpHeaders headers = null;
+        ByteArrayOutputStream baos = null;
+        try {
+            //1.创建Excel文档
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            //2.创建文档摘要
+            workbook.createInformationProperties();
+            //3.获取文档信息，并配置
+            DocumentSummaryInformation dsi = workbook.getDocumentSummaryInformation();
+            //3.1文档类别
+            dsi.setCategory("设备信息");
+            //3.2设置文档管理员
+            dsi.setManager("gmfff");
+            //3.3设置组织机构
+            dsi.setCompany("碘化银地面发生器设备");
+            //4.获取摘要信息并配置
+            SummaryInformation si = workbook.getSummaryInformation();
+            //4.1设置文档主题
+            si.setSubject("设备信息表");
+            //4.2.设置文档标题
+            si.setTitle("设备信息");
+            //4.3 设置文档作者
+            si.setAuthor("XXX集团");
+            //4.4设置文档备注
+            si.setComments("备注信息暂无");
+            //创建Excel表单
+            HSSFSheet sheet = workbook.createSheet("XXX集团设备信息表");
+            //创建日期显示格式
+            HSSFCellStyle dateCellStyle = workbook.createCellStyle();
+            dateCellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy"));
+            //创建标题的显示样式
+            HSSFCellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setFillForegroundColor(IndexedColors.YELLOW.index);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            //定义列的宽度
+            sheet.setColumnWidth(0, 5 * 256);
+            sheet.setColumnWidth(1, 12 * 256);
+            sheet.setColumnWidth(2, 10 * 256);
+            sheet.setColumnWidth(3, 5 * 256);
+            sheet.setColumnWidth(4, 12 * 256);
+            sheet.setColumnWidth(5, 20 * 256);
+            sheet.setColumnWidth(6, 10 * 256);
+            //5.设置表头
+            HSSFRow headerRow = sheet.createRow(0);
+            HSSFCell cell0 = headerRow.createCell(0);
+            cell0.setCellValue("ID");
+            cell0.setCellStyle(headerStyle);
+            HSSFCell cell1 = headerRow.createCell(1);
+            cell1.setCellValue("设备编号");
+            cell1.setCellStyle(headerStyle);
+            HSSFCell cell2 = headerRow.createCell(2);
+            cell2.setCellValue("设备BDID");
+            cell2.setCellStyle(headerStyle);
+            HSSFCell cell3 = headerRow.createCell(3);
+            cell3.setCellValue("设备SIMID");
+            cell3.setCellStyle(headerStyle);
+            HSSFCell cell4 = headerRow.createCell(4);
+            cell4.setCellValue("单位编号");
+            cell4.setCellStyle(headerStyle);
+            HSSFCell cell5 = headerRow.createCell(5);
+            cell5.setCellValue("通道情况");
+            cell5.setCellStyle(headerStyle);
+            HSSFCell cell6 = headerRow.createCell(6);
+            cell6.setCellValue("设备型号");
+            cell6.setCellStyle(headerStyle);
+
+            //6.装数据
+            for (int i = 0; i < eqs.size(); i++) {
+                HSSFRow row = sheet.createRow(i + 1);
+                Equipment eq = eqs.get(i);
+                row.createCell(0).setCellValue(eq.getId());
+                row.createCell(1).setCellValue(eq.getSb_BH());
+                row.createCell(2).setCellValue(eq.getSb_BDID());
+                row.createCell(3).setCellValue(eq.getSb_SIMID());
+                row.createCell(4).setCellValue(eq.getDw_BH());
+                row.createCell(5).setCellValue(eq.getTdsl());
+                row.createCell(6).setCellValue(eq.getSb_XH());
+
+            }
+            headers = new HttpHeaders();
+            headers.setContentDispositionFormData("attachment",
+                    new String("设备表.xls".getBytes("UTF-8"), "iso-8859-1"));
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            baos = new ByteArrayOutputStream();
+            workbook.write(baos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<byte[]>(baos.toByteArray(), headers, HttpStatus.CREATED);
     }
 }

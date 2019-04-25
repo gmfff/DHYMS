@@ -8,9 +8,7 @@ import org.sang.bean.PoliticsStatus;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by sang on 2018/1/12.
- */
+
 public interface EmpMapper {
     List<Nation> getAllNations();
 

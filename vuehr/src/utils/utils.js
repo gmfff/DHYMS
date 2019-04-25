@@ -57,6 +57,10 @@ export const formatRoutes = (routes)=> {
           require(['../components/GetData/' + component + '.vue'], resolve)
         }else if (component.startsWith("sco")) {
           require(['../components/ScoutNow/' + component + '.vue'], resolve)
+        }else if (component.startsWith("Man")) {
+          require(['../components/Equipment/' + component + '.vue'], resolve)
+        }else if (component.startsWith("Cwm")) {
+          require(['../components/Cwmanage/' + component + '.vue'], resolve)
         }
       },
       name: name,

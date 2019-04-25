@@ -5,9 +5,7 @@ import org.sang.bean.Department;
 
 import java.util.List;
 
-/**
- * Created by sang on 2018/1/7.
- */
+
 public interface DepartmentMapper {
     void addDep(@Param("dep") Department department);
 

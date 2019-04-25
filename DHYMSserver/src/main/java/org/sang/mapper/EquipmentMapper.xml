@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.EquipmentMapper">
+
+    <resultMap id="BaseResultMap" type="org.sang.bean.Equipment">
+        <id column="ID" property="id"/>
+        <result column="SB_BH" property="sb_BH"/>
+        <result column="SB_BDID" property="sb_BDID"/>
+        <result column="SB_SIMID" property="sb_SIMID"/>
+        <result column="DW_BH" property="dw_BH"/>
+        <result column="TDSL" property="tdsl"/>
+        <result column="SB_XH" property="sb_XH"/>
+
+    </resultMap>
+    <resultMap id="BaseResultMap1" type="org.sang.bean.Yt">
+        <id column="id" property="id"/>
+        <result column="Repository" property="Repository"/>
+        <result column="Allnums" property="Allnums"/>
+        <result column="Remainnums" property="Remainnums"/>
+        <result column="ZYD_BH" property="zyd_BH"/>
+        <result column="DW_BH" property="dw_BH"/>
+        <result column="InDate" property="InDate"/>
+        <result column="OutDate" property="OutDate"/>
+
+    </resultMap>
+
+    <resultMap id="BaseResultMap2" type="org.sang.bean.Wxrcord">
+        <id column="id" property="id"/>
+        <result column="SB_BH" property="sb_BH"/>
+        <result column="WX_RY" property="wx_RY"/>
+        <result column="Telephone" property="Telephone"/>
+        <result column="WX_DATE" property="wx_DATE"/>
+        <result column="Information" property="Information"/>
+
+    </resultMap>
+    <resultMap id="BaseResultMap3" type="org.sang.bean.Czrecord">
+        <id column="id" property="id"/>
+        <result column="SB_BH" property="sb_BH"/>
+        <result column="operator" property="operator"/>
+        <result column="telephone" property="telephone"/>
+        <result column="opera_time" property="opera_time"/>
+        <result column="information" property="information"/>
+
+    </resultMap>
+    <select id="getrecorddata" resultMap="BaseResultMap2">
+        select * from gl_wxrecord
+    </select>
+    <select id="getrecorddataSSS" resultMap="BaseResultMap3">
+        select * from gl_czrecord
+    </select>
+    <select id="getEquipmentByPage" resultMap="BaseResultMap">
+        select * from gl_sbxx where SB_BH like concat('%',#{keywords},'%')
+        <if test="start!=null and size!=null">
+            order by ID limit #{start},#{size}
+        </if>
+
+    </select>
+    <select id="getYtByPage" resultMap="BaseResultMap1">
+        select * from gl_yt where Repository like concat('%',#{keywords},'%')
+        <if test="start!=null and size!=null">
+            order by ID limit #{start},#{size}
+        </if>
+
+    </select>
+    <select  id="getCountByKeywords" resultType="Long">
+        select  count(*) from gl_sbxx where SB_BH like concat('%',#{keywords},'%');
+    </select>
+    <select  id="getCount1ByKeywords" resultType="Long">
+        select  count(*) from gl_yt where Repository like concat('%',#{keywords},'%');
+    </select>
+    <select id="Typecount">
+        select  count(*) from gl_yt where SB_LX like concat('%',#{Typecount.name},'%');
+    </select>
+    <select id="getAllTypes" resultType="org.sang.bean.Position">
+        select name from position;
+    </select>
+
+    <update id="updateEquipment">
+        update gl_sbxx
+        <set>
+            <if test="equipment.sb_BH != null">
+                SB_BH = #{equipment.sb_BH,jdbcType=VARCHAR},
+            </if>
+            <if test="equipment.sb_BDID != null">
+                SB_BDID = #{equipment.sb_BDID,jdbcType=VARCHAR},
+            </if>
+            <if test="equipment.sb_SIMID != null">
+                SB_SIMID = #{equipment.sb_SIMID,jdbcType=VARCHAR},
+            </if>
+            <if test="equipment.dw_BH != null">
+                DW_BH = #{equipment.dw_BH,jdbcType=VARCHAR},
+            </if>
+            <if test="equipment.tdsl != null">
+                TDSL = #{equipment.tdsl,jdbcType=INTEGER},
+            </if>
+            <if test="equipment.sb_XH != null">
+                SB_XH = #{equipment.sb_XH,jdbcType=VARCHAR},
+            </if>
+
+        </set>
+        where ID = #{equipment.id,jdbcType=BIGINT}
+    </update>
+    <update id="updateDy">
+        update gl_yt
+        <set>
+            <if test="yt.dw_BH!= null">
+                DW_BH = #{yt.dw_BH},
+            </if>
+            <if test="yt.repository!= null">
+              Repository = #{yt.repository},
+            </if>
+            <if test="yt.allnums!= null">
+                Allnums = #{yt.allnums},
+            </if>
+            <if test="yt.remainnums!= null">
+                Remainnums = #{yt.remainnums},
+            </if>
+            <if test="yt.zyd_BH != null">
+                ZYD_BH = #{yt.zyd_BH},
+            </if>
+            <if test="yt.dw_BH!= null">
+                DW_BH = #{yt.dw_BH},
+            </if>
+        </set>
+        where id = #{yt.id,jdbcType=INTEGER}
+
+    </update>
+    <update id="updateDynums">
+        update gl_yt
+        <set>
+            <if test="yt.remainnums!=null">
+              Remainnums =#{yt.remainnums},
+            </if>
+            <if test="yt.inDate!=null">
+                InDate=#{yt.inDate,jdbcType=DATE},
+            </if>
+            <if test="yt.outDate!=null">
+                OutDate=#{yt.outDate,jdbcType=DATE},
+            </if>
+        </set>
+        where id = #{yt.id,jdbcType=INTEGER}
+
+    </update>
+
+    <delete id="deleteEquipmentById">
+    DELETE FROM gl_sbxx WHERE ID IN
+    <foreach collection="ids" separator="," open="(" close=")" item="id">
+        #{id}
+    </foreach>
+    </delete>
+    <delete id="deleteDyById">
+        DELETE FROM gl_yt WHERE id IN
+        <foreach collection="ids" separator="," open="(" close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <insert id="addEquipment">
+    insert into gl_sbxx(SB_BH,SB_BDID,SB_SIMID,DW_BH,TDSL,SB_XH)
+    values
+
+            (#{equipments.sb_BH,jdbcType=VARCHAR},
+            #{equipments.sb_BDID,jdbcType=VARCHAR},
+            #{equipments.sb_SIMID,jdbcType=VARCHAR},
+            #{equipments.dw_BH,jdbcType=VARCHAR},
+            #{equipments.tdsl,jdbcType=VARCHAR},
+            #{equipments.sb_XH,jdbcType=VARCHAR})
+    </insert>
+    <insert id="addDy">
+      insert into gl_yt(Repository,Allnums,Remainnums,ZYD_BH,DW_BH)
+      values  (
+            #{yts.repository,jdbcType=VARCHAR},
+            #{yts.allnums,jdbcType=INTEGER},
+            #{yts.remainnums,jdbcType=INTEGER},
+            #{yts.zyd_BH,jdbcType=VARCHAR},
+            #{yts.dw_BH,jdbcType=VARCHAR}
+      )
+    </insert>
+</mapper>

@@ -791,11 +791,12 @@
       loadEmps(){
         var _this = this;
         this.tableLoading = true;
-        this.getRequest("/employee/basic/emp?page=" + this.currentPage + "&size=10&keywords=" + this.keywords + "&politicId=" + this.emp.politicId + "&nationId=" + this.emp.nationId + "&posId=" + this.emp.posId + "&jobLevelId=" + this.emp.jobLevelId + "&engageForm=" + this.emp.engageForm + "&departmentId=" + this.emp.departmentId + "&beginDateScope=" + this.beginDateScope).then(resp=> {
+        this.getRequest("/employee/basic/emp?page=" + this.currentPage + "&size=10&keywords=" + this.keywords+ "&politicId=" + this.emp.politicId + "&nationId=" + this.emp.nationId + "&posId=" + this.emp.posId + "&jobLevelId=" + this.emp.jobLevelId + "&engageForm=" + this.emp.engageForm + "&departmentId=" + this.emp.departmentId + "&beginDateScope=" + this.beginDateScope).then(resp=> {
           this.tableLoading = false;
           if (resp && resp.status == 200) {
             var data = resp.data;
             _this.emps = data.emps;
+            console.log(_this.emps);
             _this.totalCount = data.count;
 //            _this.emptyEmpData();
           }
@@ -820,6 +821,7 @@
             } else {
               //添加
               this.tableLoading = true;
+
               this.postRequest("/employee/basic/emp", this.emp).then(resp=> {
                 _this.tableLoading = false;
                 if (resp && resp.status == 200) {
@@ -874,6 +876,7 @@
       },
       showEditEmpView(row){
         console.log(row)
+        this.dialogVisible = true;
         this.dialogTitle = "编辑员工";
         this.emp = row;
         this.emp.birthday = this.formatDate(row.birthday);
@@ -894,7 +897,7 @@
 //        delete this.emp.politicsStatus;
         delete this.emp.workAge;
         delete this.emp.notWorkDate;
-        this.dialogVisible = true;
+        
       },
       showAddEmpView(){
         this.dialogTitle = "添加员工";

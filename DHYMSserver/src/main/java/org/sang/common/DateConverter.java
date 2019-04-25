@@ -6,9 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by sang on 2018/1/13.
- */
+
 public class DateConverter implements Converter<String,Date> {
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     @Override
