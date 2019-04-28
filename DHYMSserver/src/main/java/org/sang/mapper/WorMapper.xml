@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sang.mapper.WorMapper">
+    <select id="getAllNations" resultType="org.sang.bean.Nation">
+        select * from nation;
+    </select>
+    <select id="getAllPolitics" resultType="org.sang.bean.PoliticsStatus">
+        select * from politicsstatus;
+    </select>
+    <insert id="addWor" parameterType="org.sang.bean.WorkList">
+            insert into table_zyxx(zyxx_id,zyd_bh,zyxx_jd,zyxx_wd,zyxx_date,pdlx_bh,zyxx_zylx,gpydl,hjydl,hjlx_bh,
+            ytydl,ytlx_bh,qtydl,agiydl,zyxx_time1,zyxx_time2,zyxx_fw,zyxx_yj,zyxx_tq1,zyxx_tq2,zy_mj,zy_xg,zyxx_rybh,
+            tb_name,tb_dwbh,tb_date,comment,if_ydzy,if_check,if_upload)
+    values ( #{zyxx_id,jdbcType=INTEGER},
+      #{zyd_bh,jdbcType=VARCHAR}, #{zyxx_jd,jdbcType=DOUBLE}, #{zyxx_wd,jdbcType=DOUBLE}, #{zyxx_date,jdbcType=TIMESTAMP},
+      #{pdlx_bh,jdbcType=INTEGER}, #{zyxx_zylx,jdbcType=INTEGER}, #{gpydl,jdbcType=INTEGER},
+      #{hjydl,jdbcType=INTEGER}, #{hjlx_bh,jdbcType=INTEGER}, #{ytydl,jdbcType=INTEGER},
+      #{ytlx_bh,jdbcType=INTEGER}, #{qtydl,jdbcType=INTEGER}, #{agiydl,jdbcType=INTEGER},
+      #{zyxx_time1,jdbcType=TIMESTAMP}, #{zyxx_time2,jdbcType=TIMESTAMP}, #{zyxx_fw,jdbcType=FLOAT},
+      #{zyxx_yj,jdbcType=FLOAT},#{zyxx_tq1,jdbcType=INTEGER},
+      #{zyxx_tq2,jdbcType=INTEGER}, #{zy_mj,jdbcType=INTEGER},
+      #{zy_xg,jdbcType=INTEGER}, #{zyxx_rybh,jdbcType=VARCHAR}, #{tb_name,jdbcType=VARCHAR}, #{tb_dwbh,jdbcType=VARCHAR}
+      , #{tb_date,jdbcType=TIMESTAMP}, #{comment,jdbcType=VARCHAR}, #{if_ydzy,jdbcType=TINYINT}
+      , #{if_check,jdbcType=TINYINT}, #{if_upload,jdbcType=TINYINT}
+      )
+    </insert>
+    <select id="getMaxWorkID" resultType="INTEGER">
+        select max(ZYXX_ID) from table_zyxx
+    </select>
+    <resultMap id="BaseResultMap" type="org.sang.bean.WorkList">
+        <id column="ID" property="id"/>
+        <result column="ZYXX_ID" property="zyxx_id"/>
+        <result column="ZYD_BH" property="zyd_bh"/>
+        <result column="ZYXX_JD" property="zyxx_jd"/>
+        <result column="ZYXX_WD" property="zyxx_wd"/>
+        <result column="ZYXX_DATE" property="zyxx_date"/>
+        <result column="PDLX_BH" property="pdlx_bh"/>
+        <result column="ZYXX_ZYLX" property="zyxx_zylx"/>
+        <result column="GPYDL" property="gpydl"/>
+        <result column="HJYDL" property="hjydl"/>
+        <result column="HJLX_BH" property="hjlx_bh"/>
+        <result column="YTYDL" property="ytydl"/>
+        <result column="YTLX_BH" property="ytlx_bh"/>
+        <result column="QTYDL" property="qtydl"/>
+        <result column="AGIYDL" property="agiydl"/>
+        <result column="ZYXX_TIME1" property="zyxx_time1"/>
+        <result column="ZYXX_TIME2" property="zyxx_time2"/>
+        <result column="ZYXX_FW" property="zyxx_fw"/>
+        <result column="ZYXX_YJ" property="zyxx_yj"/>
+        <result column="ZYXX_TQ1" property="zyxx_tq1"/>
+        <result column="ZYXX_TQ2" property="zyxx_tq2"/>
+        <result column="ZY_MJ" property="zy_mj"/>
+        <result column="ZY_XG" property="zy_xg"/>
+        <result column="ZYXX_RYBH" property="zyxx_rybh"/>
+        <result column="TB_NAME" property="tb_name"/>
+        <result column="TB_DWBH" property="tb_dwbh"/>
+        <result column="TB_DATE" property="tb_date"/>
+        <result column="COMMENT" property="comment"/>
+        <result column="IF_YDZY" property="if_ydzy"/>
+        <result column="IF_CHECK" property="if_check"/>
+        <result column="IF_UPLOAD" property="if_upload"/>
+    </resultMap>
+    <select id="getWorklistByPage"  resultMap="BaseResultMap">
+        select * from table_zyxx where TB_NAME like concat('%',#{keywords},'%')
+        <if test="zydbh!=null and zydbh!=''">
+            AND ZYD_BH like concat('%',#{zydbh},'%')
+        </if>
+        <if test="zyrybh!=null and zyrybh!=''">
+            AND ZYXX_RYB like concat('%',#{zyrybh},'%')
+        </if>
+        <if test="startBeginDate!=null and endBeginDate!=null and startBeginDate!='' and endBeginDate!=''">
+            AND ZYXX_DATE BETWEEN #{startBeginDate} AND #{endBeginDate}
+        </if>
+        <if test="start!=null and size!=null">
+            order by id limit #{start},#{size}
+        </if>
+    </select>
+    <select id="getCountByKeywords" resultType="Long">
+        SELECT count(*) FROM table_zyxx WHERE TB_NAME like concat('%',#{keywords},'%')
+        <if test="zydbh!=null and zydbh!=''">
+            AND ZYD_BH like concat('%',#{zydbh},'%')
+        </if>
+        <if test="zyrybh!=null and zyrybh!=''">
+            AND ZYXX_RYBH like concat('%',#{zyrybh},'%')
+        </if>
+        <if test="startBeginDate!=null and endBeginDate!=null and startBeginDate!='' and endBeginDate!=''">
+            AND ZYXX_DATE BETWEEN #{startBeginDate} AND #{endBeginDate}
+        </if>
+    </select>
+    <update id="updateWor">
+        update table_zyxx
+        <set>
+            <if test="emp.zyxx_id != null">
+                zyxx_id = #{emp.zyxx_id,jdbcType=INTEGER},
+            </if>
+            <if test="emp.zyd_bh != null">
+                zyd_bh = #{emp.zyd_bh,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.zyxx_jd != null">
+                zyxx_jd = #{emp.zyxx_jd,jdbcType=DOUBLE},
+            </if>
+            <if test="emp.zyxx_wd != null">
+                zyxx_wd = #{emp.zyxx_wd,jdbcType=DOUBLE},
+            </if>
+            <if test="emp.zyxx_date != null">
+                zyxx_date = #{emp.zyxx_date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="emp.pdlx_bh != null">
+                pdlx_bh = #{emp.pdlx_bh,jdbcType=INTEGER},
+            </if>
+            <if test="emp.zyxx_zylx != null">
+                zyxx_zylx = #{emp.zyxx_zylx,jdbcType=INTEGER},
+            </if>
+            <if test="emp.gpydl != null">
+                gpydl = #{emp.gpydl,jdbcType=INTEGER},
+            </if>
+            <if test="emp.hjydl != null">
+                hjydl = #{emp.hjydl,jdbcType=INTEGER},
+            </if>
+            <if test="emp.hjlx_bh != null">
+                hjlx_bh = #{emp.hjlx_bh,jdbcType=INTEGER},
+            </if>
+            <if test="emp.ytydl != null">
+                ytydl = #{emp.ytydl,jdbcType=INTEGER},
+            </if>
+            <if test="emp.ytlx_bh != null">
+                ytlx_bh = #{emp.ytlx_bh,jdbcType=INTEGER},
+            </if>
+            <if test="emp.qtydl != null">
+                qtydl = #{emp.qtydl,jdbcType=INTEGER},
+            </if>
+            <if test="emp.agiydl != null">
+                agiydl = #{emp.agiydl,jdbcType=INTEGER},
+            </if>
+            <if test="emp.zyxx_time1 != null">
+                zyxx_time1 = #{emp.zyxx_time1,jdbcType=TIMESTAMP},
+            </if>
+            <if test="emp.zyxx_time2 != null">
+                zyxx_time2 = #{emp.zyxx_time2,jdbcType=TIMESTAMP},
+            </if>
+            <if test="emp.zyxx_fw != null">
+                zyxx_fw = #{emp.zyxx_fw,jdbcType=FLOAT},
+            </if>
+            <if test="emp.zyxx_yj != null">
+                zyxx_yj = #{emp.zyxx_yj,jdbcType=FLOAT},
+            </if>
+            <if test="emp.zyxx_tq1 != null">
+                zyxx_tq1 = #{emp.zyxx_tq1,jdbcType=INTEGER},
+            </if>
+            <if test="emp.zyxx_tq2 != null">
+                zyxx_tq2 = #{emp.zyxx_tq2,jdbcType=INTEGER},
+            </if>
+            <if test="emp.zy_mj != null">
+                zy_mj = #{emp.zy_mj,jdbcType=INTEGER},
+            </if>
+            <if test="emp.zy_xg != null">
+                zy_xg = #{emp.zy_xg,jdbcType=INTEGER},
+            </if>
+            <if test="emp.zyxx_rybh != null">
+                zyxx_rybh = #{emp.zyxx_rybh,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.tb_name != null">
+                tb_name = #{emp.tb_name,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.tb_dwbh != null">
+                tb_dwbh = #{emp.tb_dwbh,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.tb_date != null">
+                tb_date = #{emp.tb_date,jdbcType=TIMESTAMP},
+            </if>
+            <if test="emp.comment != null">
+                comment = #{emp.comment,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.if_ydzy != null">
+                if_ydzy = #{emp.if_ydzy,jdbcType=TINYINT},
+            </if>
+            <if test="emp.if_check != null">
+                if_check = #{emp.if_check,jdbcType=TINYINT},
+            </if>
+            <if test="emp.if_upload != null">
+                if_upload = #{emp.if_upload,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{emp.id,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteWorById">
+        DELETE FROM table_zyxx WHERE id IN
+        <foreach collection="ids" separator="," open="(" close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <insert id="addEmps">
+        insert into employee (name, gender,
+        birthday, idCard, wedlock, nationId,
+        nativePlace, politicId, email,
+        phone, address, departmentId,
+        jobLevelId, posId, engageForm,
+        tiptopDegree, specialty, school,
+        beginDate,workID,
+        contractTerm, conversionTime,
+        beginContract, endContract, workAge
+        )
+        values
+        <foreach collection="emps" item="emp" separator=",">
+            (#{emp.name,jdbcType=VARCHAR}, #{emp.gender,jdbcType=CHAR},
+            #{emp.birthday,jdbcType=DATE}, #{emp.idCard,jdbcType=CHAR}, #{emp.wedlock,jdbcType=CHAR},
+            #{emp.nationId,jdbcType=BIGINT},
+            #{emp.nativePlace,jdbcType=VARCHAR}, #{emp.politicId,jdbcType=BIGINT}, #{emp.email,jdbcType=VARCHAR},
+            #{emp.phone,jdbcType=VARCHAR}, #{emp.address,jdbcType=VARCHAR}, #{emp.departmentId,jdbcType=BIGINT},
+            #{emp.jobLevelId,jdbcType=BIGINT}, #{emp.posId,jdbcType=BIGINT}, #{emp.engageForm,jdbcType=VARCHAR},
+            #{emp.tiptopDegree,jdbcType=VARCHAR}, #{emp.specialty,jdbcType=VARCHAR}, #{emp.school,jdbcType=VARCHAR},
+            #{emp.beginDate,jdbcType=DATE},#{emp.workID,jdbcType=BIGINT},
+            #{emp.contractTerm,jdbcType=BIGINT}, #{emp.conversionTime,jdbcType=DATE},
+            #{emp.beginContract,jdbcType=DATE}, #{emp.endContract,jdbcType=DATE}, #{emp.workAge,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+    <select id="getEmployeeByPageShort" resultMap="BaseResultMap">
+select e.*,d.`id` as did,d.`name` as dname,s.`id` as sid,s.`accumulationFundBase`,s.`accumulationFundPer`,s.`allSalary`,s.`basicSalary`,s.`bonus`,s.`createDate`,s.`lunchSalary`,s.`medicalBase`,s.`medicalPer`,s.`name` as sname,s.`pensionBase`,s.`pensionPer`,s.`trafficSalary` from employee e left join department d on e.`departmentId`=d.id left join empsalary es on es.`eid`=e.`id` left join salary s on s.`id`=es.`sid` ORDER BY e.id limit #{start},#{size}
+    </select>
+</mapper>
