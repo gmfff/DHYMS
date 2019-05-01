@@ -49,8 +49,8 @@ export const formatRoutes = (routes)=> {
           require(['../components/personnel/' + component + '.vue'], resolve)
         } else if (component.startsWith("Map")) {
           require(['../components/map/' + component + '.vue'], resolve)
-        } else if (component.startsWith("Sta")) {
-          require(['../components/statistics/' + component + '.vue'], resolve)
+        } else if (component.startsWith("Wor")) {
+          require(['../components/worklist/' + component + '.vue'], resolve)
         } else if (component.startsWith("Sys")) {
           require(['../components/system/' + component + '.vue'], resolve)
         }else if (component.startsWith("Dow")) {

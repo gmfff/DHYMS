@@ -44,6 +44,27 @@
         <result column="information" property="information"/>
 
     </resultMap>
+    <resultMap id="BaseResultMap4" type="org.sang.bean.Eqzt">
+        <id column="id" property="id"/>
+        <result column="SB_BH" property="sb_BH"/>
+        <result column="SB_ZT" property="sb_ZT"/>
+    </resultMap>
+    <select id="getEqzt" resultMap="BaseResultMap4">
+      select * from table_sbzt
+
+    </select>
+    <select id="getEqztAllCount" resultType="Long">
+        select count(*) from table_sbzt;
+    </select>
+    <select id="getEqztWorkCount" resultType="Long">
+        select count(*) from table_sbzt where SB_ZT like "work";
+    </select>
+    <select id="getEqztRepairCount" resultType="Long">
+        select count(*) from table_sbzt where SB_ZT like "repair";
+    </select>
+    <select id="getEqztUnusedCount" resultType="Long">
+        select count(*) from table_sbzt where SB_ZT like "unused";
+    </select>
     <select id="getrecorddata" resultMap="BaseResultMap2">
         select * from gl_wxrecord
     </select>

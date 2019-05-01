@@ -22,6 +22,11 @@ public interface EquipmentMapper {
     Long[] getTypecount(@Param("Typecount") Position position);
     List<Wxrcord> getrecorddata();
     List<Czrecord> getrecorddataSSS();
+    List<Eqzt> getEqzt();
+    Long getEqztAllCount();
+    Long getEqztWorkCount();
+    Long getEqztRepairCount();
+    Long getEqztUnusedCount();
 
 
 }

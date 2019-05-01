@@ -137,7 +137,7 @@
          
         </div>
         <!--  <div style="display: flex; margin-left: 200px;" class="hello" >
-            <p>设备型号占比图：</p>
+            <p>设备型号占比图：</p> 
              <chart ref="chart1" :options="orgOptions" :auto-resize="true"></chart>
            </div> -->
       </el-main>
@@ -295,6 +295,7 @@
       this.initData();
       this.loadEquipments();
       this.portray();
+      this.test();
     },
     methods: {
       fileUploadSuccess(response, file, fileList){
@@ -392,6 +393,13 @@
             console.log(_this.totalCount);
 //            _this.emptyEmpData();
           }
+        })
+      },
+      test(){
+        var sendData="hello java,this is mqttdata"
+        this.postRequest("/test/sendMqtt?sendData="+sendData).then(resp=> {
+          this.tableLoading = false;
+          
         })
       },
       addEquipment(formName){

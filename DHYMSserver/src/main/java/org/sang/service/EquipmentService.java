@@ -22,6 +22,22 @@ public class EquipmentService {
 
         return equipmentMapper.getEquipmentByPage(start, size,keywords);
     }
+
+    public  List<Eqzt> getEqzt(){
+        return equipmentMapper.getEqzt();
+    }
+    public Long getEqztAllCount(){
+        return equipmentMapper.getEqztAllCount();
+    }
+    public Long getEqztWorkCount(){
+        return equipmentMapper.getEqztWorkCount();
+    }
+    public Long getEqztRepairCount(){
+        return equipmentMapper.getEqztRepairCount();
+    }
+    public Long getEqztUnusedCount(){
+        return equipmentMapper.getEqztUnusedCount();
+    }
     public Long getCountByKeywords(String keywords){
         return equipmentMapper.getCountByKeywords(keywords);
     }

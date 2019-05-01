@@ -1,7 +1,8 @@
 package org.sang.controller.worklist;
 
-import org.sang.bean.WorkList;
-import org.sang.bean.Test;
+import
+        org.sang.bean.WorkList;
+
 import org.sang.bean.Employee;
 import org.sang.bean.Position;
 import org.sang.bean.RespBean;
@@ -24,9 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-/**
- * Created by sang on 2018/1/12.
- */
+
 @RestController
 @RequestMapping("/worklist/basic")
 public class WorkListController {
@@ -73,11 +72,7 @@ public class WorkListController {
         }
         return RespBean.error("添加失败!");
     }
-    @RequestMapping(value = "/emp1", method = RequestMethod.POST)
-    public RespBean addWor(Test a) {
-        System.out.println("&&&&&&&&&&&&&&&&&&&&"+a.getTest());
-        return RespBean.error("添加!");
-    }
+
 //条件查找
     @RequestMapping(value = "/emp", method = RequestMethod.PUT)
     public RespBean updateWor(WorkList worklist) {

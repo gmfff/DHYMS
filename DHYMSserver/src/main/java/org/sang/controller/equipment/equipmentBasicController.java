@@ -58,6 +58,26 @@ public class equipmentBasicController {
         map.put("czrecords",czrecords);
         return map;
     }
+    @RequestMapping(value = "/equipmentZt", method = RequestMethod.GET)
+    public Map<String,Object> getEqzt(){
+        Map<String, Object> map = new HashMap<>();
+        List<Eqzt> eqzts = equipmentService.getEqzt();
+        Long count=equipmentService.getEqztAllCount();
+        Long count1=equipmentService.getEqztWorkCount();
+        Long count2=equipmentService.getEqztRepairCount();
+        Long count3=equipmentService.getEqztUnusedCount();
+
+        map.put("equipments",eqzts);
+        map.put("count",count);
+        map.put("count1",count1);
+        map.put("count2",count2);
+        map.put("count3",count3);
+
+
+
+
+        return map;
+    }
 
     @RequestMapping(value = "/yt", method = RequestMethod.GET)  //获取烟条
     public Map<String,Object> getYtBypage(
